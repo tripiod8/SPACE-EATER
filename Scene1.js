@@ -14,8 +14,6 @@ class Scene1 extends Phaser.Scene {
         this.green_beam = this.load.image('green_beam', 'assets/rocket/Green_Beam.png');
         this.background = this.load.image('background', 'assets/Background.jpg');
         this.logo = this.load.image('logo', 'assets/Logo.png');
-
-
     }
     
     create() {

@@ -2,7 +2,6 @@ class Scene3 extends Phaser.Scene {
     constructor(){
         super('playGame');
     }
-
     create(){
         ///////////////// BACKGROUND ////////////////////////////////////////////////////////////
         this.background = this.add.tileSprite(0, 0, config.width, config.height, "background");
@@ -15,35 +14,45 @@ class Scene3 extends Phaser.Scene {
         this.throttle.play('throttle_anim');
         ////////////////////////////////////////////////////////////////////////////
 
-          //////////////// KEYBOARD ////////////////////////////////////////////////
-          this.cursorKeys = this.input.keyboard.createCursorKeys();
-          this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-          /////////////////////////////////////////////////////////////////////////
+        //////////////// KEYBOARD ////////////////////////////////////////////////
+        this.cursorKeys = this.input.keyboard.createCursorKeys();
+        this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        /////////////////////////////////////////////////////////////////////////
 
-          //////////// PROJECTILES /////////////////////////////////////////////
-          this.projectiles = this.add.group();
+        //////////// PROJECTILES /////////////////////////////////////////////
+        this.projectiles = this.add.group();
         ///////////////////////////////////////////////////////////////////////////////////////
 
         ////////////// HEADER //////////////////////////////////////////////////////
-          this.logo = this.add.image(80, 80, 'logo');
-          this.add.text(config.width * 0.8, config.height * 0.05, 'Score: 0');
+        this.scoreString ='Score: '
+        this.score = 0;
+        this.logo = this.add.image(80, 80, 'logo');
+        this.scoreText = this.add.text(config.width * 0.8, config.height * 0.05, this.scoreString, {font: "25px Space Mono"});
+        
+
+        
         /////////////////////////////////////////////////////////////////////////////////
     }
 
     update(){
+        var frm_count = 0;
         this.background.tilePositionY -= 0.5;
         this.moveRocketManager();
 
         if (Phaser.Input.Keyboard.JustDown(this.spacebar)){
-            this.shootBeam()
+            this.shootBeam();
+            this.score += 10;
+            this.scoreText.setText(this.scoreString + this.score);
          }
 
          for(var i=0; i<this.projectiles.getChildren().length; i++){
              var beam = this.projectiles.getChildren()[i];
              beam.update();
          }
-         console.log(`x: ${this.rocket.x} y: ${this.throttle.y}`);
-         
+
+         // Incomplete
+         if((frm_count % 600000 == 0) && (this.rocket.x >= 200)){
+         }
 
          
     }
