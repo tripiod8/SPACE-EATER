@@ -31,7 +31,10 @@ class Scene3 extends Phaser.Scene {
         this.powerUps = this.add.group();
         this.powerUps.enableBody = true;
 
-        this.physics.add.collider(this.projectiles, this.powerUps);
+        this.physics.add.collider(this.projectiles, this.powerUps, function(projectile, powerUp){
+            powerUp.destroy();
+            projectile.destroy();
+        });
         ///////////////////////////////////////////////////////////////////////////////////////
 
         ////////////// HEADER //////////////////////////////////////////////////////
@@ -64,7 +67,8 @@ class Scene3 extends Phaser.Scene {
             this.choice_powerUp = Math.floor(Math.random() * 3);
             this.mypowerUp = this.powerUps_arr[this.choice_powerUp];
             
-            this.powerUp = this.powerUps.create(Phaser.Math.Between(0, 600), Phaser.Math.Between(0, 800), this.mypowerUp);
+            this.powerUp = this.physics.add.sprite(Phaser.Math.Between(0, 600), Phaser.Math.Between(0, 800), this.mypowerUp);
+            this.powerUps.add(this.powerUp);
             console.log(this.powerUp);
 
             if(this.powerUp.texture.key == 'recharge'){
@@ -79,8 +83,6 @@ class Scene3 extends Phaser.Scene {
                 this.my_powerUp.x = (Math.random() * 650)+50;
             }
         }
-
-        
 
     }
 
