@@ -8,10 +8,20 @@ class Scene1 extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 32
         });
+        this.asteroid = this.load.spritesheet('asteroid', 'assets/asteroid_dark_spritesheet.png', {
+            frameWidth: 172,
+            frameHeight: 172
+        });
         this.rocket = this.load.image('rocket', 'assets/rocket/Rocket.png');
         this.rocket_right = this.load.image('rocket_right', 'assets/rocket/Rocket_Right.png');
         this.rocket_left = this.load.image('rocket_left', 'assets/rocket/Rocket_Left.png');
+
+        this.ammo = this.load.image('ammo', 'assets/upgrades/Ammo.png');
+        this.recharge = this.load.image('recharge', 'assets/upgrades/Recharge.png');
+        this.shield = this.load.image('shield', 'assets/upgrades/Shield.png');
+
         this.green_beam = this.load.image('green_beam', 'assets/rocket/Green_Beam.png');
+
         this.background = this.load.image('background', 'assets/Background.jpg');
         this.logo = this.load.image('logo', 'assets/Logo.png');
     }
@@ -21,6 +31,13 @@ class Scene1 extends Phaser.Scene {
             key: "throttle_anim",
             frames: this.anims.generateFrameNumbers("throttle"),
             frameRate: 5,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'asteroid_anim',
+            frames: this.anims.generateFrameNumbers("asteroid"),
+            frameRate: 2,
             repeat: -1
         });
 
