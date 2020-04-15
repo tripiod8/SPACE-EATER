@@ -53,7 +53,7 @@ class Scene3 extends Phaser.Scene {
         this.frm_count++;
     
         this.background.tilePositionY -= 0.5;
-        this.moveRocketManager();
+        manageRocket.moveRocketManager(this.rocket, this.throttle, this.cursorKeys);
 
         if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
             this.shootBeam();
@@ -90,48 +90,5 @@ class Scene3 extends Phaser.Scene {
 
     shootBeam() {
         var beam = new Beam(this);
-    }
-
-    moveRocketManager() {
-        if (this.rocket.x <= 32) {
-            this.rocket.x = 32;
-        }
-        else if (this.rocket.x >= 568) {
-            this.rocket.x = 568;
-        } else if (this.rocket.y >= 740) {
-            this.rocket.y = 740;
-        }
-
-        if (this.throttle.x <= 32) {
-            this.throttle.x = 32;
-        }
-        else if (this.throttle.x >= 568) {
-            this.throttle.x = 568;
-        } else if (this.throttle.y >= 780) {
-            this.throttle.y = 780;
-        }
-
-
-        if (this.cursorKeys.left.isDown) {
-            this.rocket.setTexture('rocket_left');
-            this.rocket.setVelocityX(-gameSettings.gameSpeed);
-            this.throttle.setVelocityX(-gameSettings.gameSpeed);
-        } else if (this.cursorKeys.right.isDown) {
-            this.rocket.setTexture('rocket_right');
-            this.rocket.setVelocityX(gameSettings.gameSpeed);
-            this.throttle.setVelocityX(gameSettings.gameSpeed);
-        } else if (this.cursorKeys.up.isDown) {
-            this.rocket.setVelocityY(-gameSettings.gameSpeed);
-            this.throttle.setVelocityY(-gameSettings.gameSpeed);
-        } else if (this.cursorKeys.down.isDown) {
-            this.rocket.setVelocityY(gameSettings.gameSpeed);
-            this.throttle.setVelocityY(gameSettings.gameSpeed);
-        } else {
-            this.rocket.setTexture('rocket');
-            this.rocket.setVelocityX(0);
-            this.throttle.setVelocityX(0);
-            this.rocket.setVelocityY(0);
-            this.throttle.setVelocityY(0);
-        }
     }
 }
