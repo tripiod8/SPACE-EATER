@@ -10,7 +10,6 @@ class Scene3 extends Phaser.Scene {
 
         //////////// VAR /////////////////////////////////////////////////////////////
         this.frm_count = 0;
-        // this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
         //////////////////////////////////////////////////////////////////////////////
 
         //////////////// ROCKET //////////////////////////////////////////////////
@@ -29,9 +28,7 @@ class Scene3 extends Phaser.Scene {
         //////////// PROJECTILES /////////////////////////////////////////////
         this.projectiles = this.add.group();
 
-        this.powerUps_arr = ['ammo', 'recharge', 'shield'];
         this.powerUps = this.add.group();
-        this.powerUps.enableBody = true;
 
         this.physics.add.collider(this.projectiles, this.powerUps, function(projectile, powerUp){
             powerUp.destroy();
@@ -66,29 +63,16 @@ class Scene3 extends Phaser.Scene {
             beam.update();
         }
 
-        if ((this.frm_count % 120) == 0) {
-            this.choice_powerUp = Math.floor(Math.random() * 3);
-            this.mypowerUp = this.powerUps_arr[this.choice_powerUp]; 
-            this.powerUp = this.physics.add.sprite(Phaser.Math.Between(0, 600), Phaser.Math.Between(0, 800), this.mypowerUp);
-            this.powerUps.add(this.powerUp);
-            console.log(this.powerUp);
-
-            if(this.powerUp.texture.key == 'recharge'){
-                console.log('Found one!');
-            }
-        }
-
-        // This does not do anyhting
-        for(var i=0; i<this.powerUps.children.length; i++){
-            if(this.powerUps.children[i].y < 10){
-                this.my_powerUp = this.powerUps[i];
-                this.my_powerUp.y = 650;
-                this.my_powerUp.x = (Math.random() * 650)+50;
-            }
+        if((this.frm_count % 120) == 0){
+            this.randomPowerUp();
         }
     }
 
     shootBeam() {
         var beam = new Beam(this);
+    }
+
+    randomPowerUp(){
+        var powerUp = new PowerUp(this);
     }
 }
