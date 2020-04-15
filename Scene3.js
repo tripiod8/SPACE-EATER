@@ -17,6 +17,8 @@ class Scene3 extends Phaser.Scene {
         this.throttle = this.physics.add.sprite(config.width / 2, (config.height * 0.8) + 42, 'throttle');
         this.rocket = this.physics.add.image(config.width / 2, config.height * 0.8, 'rocket');
         this.throttle.play('throttle_anim');
+        this.rocket.setDepth(2);
+        this.throttle.setDepth(2);
         ////////////////////////////////////////////////////////////////////////////
 
         //////////////// KEYBOARD ////////////////////////////////////////////////
@@ -42,8 +44,9 @@ class Scene3 extends Phaser.Scene {
         this.score = 0;
         this.logo = this.add.image(80, 80, 'logo');
         this.scoreText = this.add.text(config.width * 0.8, config.height * 0.05, this.scoreString, { font: "25px Space Mono" });
+        this.logo.setDepth(1);
+        this.scoreText.setDepth(1);
         /////////////////////////////////////////////////////////////////////////////////
-
     }
 
     update() {
@@ -65,8 +68,7 @@ class Scene3 extends Phaser.Scene {
 
         if ((this.frm_count % 120) == 0) {
             this.choice_powerUp = Math.floor(Math.random() * 3);
-            this.mypowerUp = this.powerUps_arr[this.choice_powerUp];
-            
+            this.mypowerUp = this.powerUps_arr[this.choice_powerUp]; 
             this.powerUp = this.physics.add.sprite(Phaser.Math.Between(0, 600), Phaser.Math.Between(0, 800), this.mypowerUp);
             this.powerUps.add(this.powerUp);
             console.log(this.powerUp);
@@ -75,7 +77,8 @@ class Scene3 extends Phaser.Scene {
                 console.log('Found one!');
             }
         }
-        
+
+        // This does not do anyhting
         for(var i=0; i<this.powerUps.children.length; i++){
             if(this.powerUps.children[i].y < 10){
                 this.my_powerUp = this.powerUps[i];
@@ -83,7 +86,6 @@ class Scene3 extends Phaser.Scene {
                 this.my_powerUp.x = (Math.random() * 650)+50;
             }
         }
-
     }
 
     shootBeam() {
@@ -108,7 +110,6 @@ class Scene3 extends Phaser.Scene {
         } else if (this.throttle.y >= 780) {
             this.throttle.y = 780;
         }
-
 
 
         if (this.cursorKeys.left.isDown) {
