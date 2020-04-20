@@ -23,6 +23,11 @@ class Scene3 extends Phaser.Scene {
         this.throttle.setDepth(2);
         ////////////////////////////////////////////////////////////////////////////
 
+        //////////// ENEMIES ////////////////////////////////////////////////////
+        this.oneEye_alien = this.add.sprite(config.width / 2, config.height / 2, 'oneEye_alien');
+        this.oneEye_alien.play("oneEye_alien_anim");
+        /////////////////////////////////////////////////////////////////////////
+
         //////////////// KEYBOARD ////////////////////////////////////////////////
         this.cursorKeys = this.input.keyboard.createCursorKeys();
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -71,7 +76,7 @@ class Scene3 extends Phaser.Scene {
             beam.update();
         }
 
-        if((this.frm_count % 120) == 0){
+        if((this.frm_count % 1120) == 0){
             this.randomPowerUp();
         }
     }

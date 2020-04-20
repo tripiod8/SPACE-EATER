@@ -12,6 +12,11 @@ class Scene1 extends Phaser.Scene {
             frameWidth: 172,
             frameHeight: 172
         });
+        this.oneEye_alien = this.load.spritesheet('oneEye_alien', 'assets/enemies/OneEye_Alien.png', {
+            frameWidth: 128,
+            frameHeight: 128
+        });
+
         this.rocket = this.load.image('rocket', 'assets/rocket/Rocket.png');
         this.rocket_right = this.load.image('rocket_right', 'assets/rocket/Rocket_Right.png');
         this.rocket_left = this.load.image('rocket_left', 'assets/rocket/Rocket_Left.png');
@@ -42,12 +47,15 @@ class Scene1 extends Phaser.Scene {
             repeat: -1
         });
 
+        this.anims.create({
+            key: 'oneEye_alien_anim',
+            frames: this.anims.generateFrameNumbers("oneEye_alien"),
+            frameRate: 20,
+            repeat: -1
+        });
 
         this.add.text(20, 20, 'Loading game...');
         this.scene.start('loadGame');
 
     }
-
-
-
 }
