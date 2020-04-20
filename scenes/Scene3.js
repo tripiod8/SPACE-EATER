@@ -6,6 +6,9 @@ class Scene3 extends Phaser.Scene {
         ///////////////// BACKGROUND ////////////////////////////////////////////////////////////
         this.background = this.add.tileSprite(0, 0, config.width, config.height, "background");
         this.background.setOrigin(0, 0);
+
+        this.dying_planet = this.add.image(config.width / 2, 650, 'dying_planet')
+        this.dying_planet.setScale(1.75);
         /////////////////////////////////////////////////////////////////////////////
 
         //////////// VAR /////////////////////////////////////////////////////////////
@@ -47,6 +50,11 @@ class Scene3 extends Phaser.Scene {
     }
 
     update() {
+        this.dying_planet.y += 1.5;
+        if(this.dying_planet. y >= 1200) {
+            this.dying_planet.destroy();
+        }
+        
         this.frm_count++;
     
         this.background.tilePositionY -= 0.5;
