@@ -1,4 +1,4 @@
-class Beam extends Phaser.GameObjects.Sprite{
+class Green_Beam extends Phaser.GameObjects.Sprite{
     constructor(scene){
         var x = scene.rocket.x;
         var y = scene.rocket.y - 40;

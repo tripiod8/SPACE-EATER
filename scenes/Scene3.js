@@ -82,7 +82,7 @@ class Scene3 extends Phaser.Scene {
     }
 
     shootBeam() {
-        var beam = new Beam(this);
+        var beam = new Green_Beam(this);
     }
 
     randomPowerUp(){
