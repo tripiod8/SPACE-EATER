@@ -25,6 +25,7 @@ class Scene3 extends Phaser.Scene {
 
         //////////// ENEMIES ////////////////////////////////////////////////////
         this.oneEye_alien = this.add.sprite(config.width / 2, config.height / 2, 'oneEye_alien');
+        this.oneEye_alien.setDepth(2);
         this.oneEye_alien.play("oneEye_alien_anim");
         /////////////////////////////////////////////////////////////////////////
 
@@ -35,6 +36,8 @@ class Scene3 extends Phaser.Scene {
 
         //////////// PROJECTILES /////////////////////////////////////////////
         this.projectiles = this.add.group();
+        this.red_beam_left = this.add.group();
+        this.red_beam_right = this.add.group();
 
         this.powerUps = this.add.group();
 
@@ -67,6 +70,8 @@ class Scene3 extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
             this.shootBeam();
+            this.redBeamLeft();
+            this.redBeamRight();
             this.score += 10;
             this.scoreText.setText(this.scoreString + this.score);
         }
@@ -83,6 +88,14 @@ class Scene3 extends Phaser.Scene {
 
     shootBeam() {
         var beam = new Green_Beam(this);
+    }
+
+    redBeamLeft() {
+        var red_beam_left = new Red_Beam_Left(this);
+    }
+    
+    redBeamRight(){
+        var red_beam_right= new Red_Beam_Right(this);
     }
 
     randomPowerUp(){
