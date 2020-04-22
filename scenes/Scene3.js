@@ -11,10 +11,6 @@ class Scene3 extends Phaser.Scene {
         this.dying_planet.setScale(1.75);
         /////////////////////////////////////////////////////////////////////////////
 
-        //////////// VAR /////////////////////////////////////////////////////////////
-        this.frm_count = 0;
-        //////////////////////////////////////////////////////////////////////////////
-
         //////////////// ROCKET //////////////////////////////////////////////////
         this.throttle = this.physics.add.sprite(config.width / 2, (config.height * 0.8) + 42, 'throttle');
         this.rocket = this.physics.add.image(config.width / 2, config.height * 0.8, 'rocket');
@@ -24,8 +20,9 @@ class Scene3 extends Phaser.Scene {
         ////////////////////////////////////////////////////////////////////////////
 
         //////////// ENEMIES ////////////////////////////////////////////////////
-        this.oneEye_alien = this.add.sprite(config.width / 2, config.height / 2, 'oneEye_alien');
+        this.oneEye_alien = this.physics.add.sprite(config.width / 2, config.height / 2, 'oneEye_alien');
         this.oneEye_alien.setDepth(2);
+        this.oneEye_alien.setCollideWorldBounds(true);
         this.oneEye_alien.play("oneEye_alien_anim");
         /////////////////////////////////////////////////////////////////////////
 
@@ -40,12 +37,22 @@ class Scene3 extends Phaser.Scene {
         this.red_beam_right = this.add.group();
 
         this.powerUps = this.add.group();
+        ///////////////////////////////////////////////////////////////////////////////////////
 
+        /////////////// COLLIDES //////////////////////////////////////////////////////////
         this.physics.add.collider(this.projectiles, this.powerUps, function(projectile, powerUp){
             powerUp.destroy();
             projectile.destroy();
         });
-        ///////////////////////////////////////////////////////////////////////////////////////
+
+        this.physics.add.collider(this.projectiles, this.oneEye_alien, function(projectile, alien){
+            gameSettings.alien_count += 1;
+            projectile.destroy();
+            console.log(gameSettings.alien_count);
+            
+            
+        });
+        ////////////////////////////////////////////////////////////////////////////////////
 
         ////////////// HEADER //////////////////////////////////////////////////////
         this.scoreString = 'Score: '
@@ -56,14 +63,21 @@ class Scene3 extends Phaser.Scene {
         this.scoreText.setDepth(1);
         /////////////////////////////////////////////////////////////////////////////////
     }
-
     update() {
         this.dying_planet.y += 1.5;
         if(this.dying_planet. y >= 1200) {
             this.dying_planet.destroy();
         }
+
+        if(gameSettings.alien_count == 7){
+            this.oneEye_alien.destroy();
+        }
+        if(gameSettings.alien_count < 7){
+            this.moveDroid();
+        }
         
-        this.frm_count++;
+        
+        gameSettings.frm_count++;
     
         this.background.tilePositionY -= 0.5;
         manageRocket.moveRocketManager(this.rocket, this.throttle, this.cursorKeys);
@@ -81,7 +95,17 @@ class Scene3 extends Phaser.Scene {
             beam.update();
         }
 
-        if((this.frm_count % 1120) == 0){
+        for (var i = 0; i < this.red_beam_left.getChildren().length; i++) {
+            var red_beam_left = this.red_beam_left.getChildren()[i];
+            red_beam_left.update();
+        }
+
+        for (var i = 0; i < this.red_beam_right.getChildren().length; i++) {
+            var red_beam_right = this.red_beam_right.getChildren()[i];
+            red_beam_right.update();
+        }
+
+        if((gameSettings.frm_count % 120) == 0){
             this.randomPowerUp();
         }
     }
@@ -101,4 +125,20 @@ class Scene3 extends Phaser.Scene {
     randomPowerUp(){
         var powerUp = new PowerUp(this);
     }
+
+     moveDroid(){
+        this.droidMover = Phaser.Math.Between(1, 4)
+        
+         if(this.droidMover == 1){
+             this.oneEye_alien.setVelocityX(100);
+         } else if(this.droidMover == 2){
+             this.oneEye_alien.setVelocityX(-100);
+         } else if(this.droidMover == 3){
+             this.oneEye_alien.setVelocityY(100);
+         } else if(this.droidMover == 4){
+             this.oneEye_alien.setVelocityY(-100);
+         } else {
+             this.oneEye_alien.setVelocityX(0);
+         }
+     }
 }

@@ -9,4 +9,10 @@ class Red_Beam_Right extends Phaser.GameObjects.Sprite{
         scene.physics.world.enableBody(this);
         this.body.velocity.y = +gameSettings.gameSpeed;
     }
+
+    update(){
+        if(this.y > 700){
+            this.destroy();
+        }
+    }
 }

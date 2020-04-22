@@ -1,5 +1,7 @@
 var gameSettings = {
-    gameSpeed: 200
+    gameSpeed: 200,
+    frm_count: 0,
+    alien_count:0
 }
 
 var config = {
