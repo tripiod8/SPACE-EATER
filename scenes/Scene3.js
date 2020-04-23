@@ -41,8 +41,8 @@ class Scene3 extends Phaser.Scene {
 
         /////////////// COLLIDES //////////////////////////////////////////////////////////
         this.physics.add.collider(this.projectiles, this.powerUps, function(projectile, powerUp){
-            powerUp.destroy();
             projectile.destroy();
+            powerUp.destroy();
         });
 
         this.physics.add.collider(this.projectiles, this.oneEye_alien, function(projectile, alien){
@@ -84,8 +84,6 @@ class Scene3 extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
             this.shootBeam();
-            this.redBeamLeft();
-            this.redBeamRight();
             this.score += 10;
             this.scoreText.setText(this.scoreString + this.score);
         }
@@ -106,6 +104,8 @@ class Scene3 extends Phaser.Scene {
         }
 
         if((gameSettings.frm_count % 120) == 0){
+            this.redBeamLeft();
+            this.redBeamRight();
             this.randomPowerUp();
         }
     }
