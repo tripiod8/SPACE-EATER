@@ -38,8 +38,6 @@ class Scene3 extends Phaser.Scene {
         this.physics.add.overlap(this.rocket, this.powerUps, function(rocket, powerUp){
             powerUp.destroy();
         });
-
-        
         ////////////////////////////////////////////////////////////////////////////////////
 
         ////////////// HEADER //////////////////////////////////////////////////////
@@ -70,7 +68,6 @@ class Scene3 extends Phaser.Scene {
 
         for (var i = 0; i < this.oneEyeAliens.getChildren().length; i++) {
             var oneEye_alien = this.oneEyeAliens.getChildren()[i];
-
             this.physics.add.overlap(this.projectiles, oneEye_alien, function(projectile, alien){
                 projectile.destroy();
                 alien.data.list.lives -= 1;
@@ -78,14 +75,6 @@ class Scene3 extends Phaser.Scene {
                     alien.destroy();
                 }            
             });
-            
-            if(gameSettings.alien_boolean === true){
-                oneEye_alien.data.set('lives', 4);
-                gameSettings.alien_boolean = false;
-            }
-
-            
-            
             oneEye_alien.update();
         }
 
