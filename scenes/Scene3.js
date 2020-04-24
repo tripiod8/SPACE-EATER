@@ -19,19 +19,14 @@ class Scene3 extends Phaser.Scene {
         this.throttle.setDepth(2);
         ////////////////////////////////////////////////////////////////////////////
 
-        //////////// ENEMIES ////////////////////////////////////////////////////
-        this.oneEye_alien = this.physics.add.sprite(config.width / 2, config.height / 2, 'oneEye_alien');
-        this.oneEye_alien.setDepth(2);
-        this.oneEye_alien.setCollideWorldBounds(true);
-        this.oneEye_alien.play("oneEye_alien_anim");
-        /////////////////////////////////////////////////////////////////////////
-
         //////////////// KEYBOARD ////////////////////////////////////////////////
         this.cursorKeys = this.input.keyboard.createCursorKeys();
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         /////////////////////////////////////////////////////////////////////////
 
-        //////////// PROJECTILES /////////////////////////////////////////////
+        //////////// GROUPS /////////////////////////////////////////////
+        this.oneEyeAliens = this.add.group();
+        
         this.projectiles = this.add.group();
         this.red_beam_left = this.add.group();
         this.red_beam_right = this.add.group();
@@ -40,18 +35,11 @@ class Scene3 extends Phaser.Scene {
         ///////////////////////////////////////////////////////////////////////////////////////
 
         /////////////// COLLIDES //////////////////////////////////////////////////////////
-        this.physics.add.collider(this.projectiles, this.powerUps, function(projectile, powerUp){
-            projectile.destroy();
+        this.physics.add.overlap(this.rocket, this.powerUps, function(rocket, powerUp){
             powerUp.destroy();
         });
 
-        this.physics.add.collider(this.projectiles, this.oneEye_alien, function(projectile, alien){
-            gameSettings.alien_count += 1;
-            projectile.destroy();
-            console.log(gameSettings.alien_count);
-            
-            
-        });
+        
         ////////////////////////////////////////////////////////////////////////////////////
 
         ////////////// HEADER //////////////////////////////////////////////////////
@@ -65,17 +53,9 @@ class Scene3 extends Phaser.Scene {
     }
     update() {
         this.dying_planet.y += 1.5;
-        if(this.dying_planet. y >= 1200) {
+        if(this.dying_planet.y >= 1200) {
             this.dying_planet.destroy();
         }
-
-        if(gameSettings.alien_count == 7){
-            this.oneEye_alien.destroy();
-        }
-        if(gameSettings.alien_count < 7){
-            this.moveDroid();
-        }
-        
         
         gameSettings.frm_count++;
     
@@ -86,6 +66,27 @@ class Scene3 extends Phaser.Scene {
             this.shootBeam();
             this.score += 10;
             this.scoreText.setText(this.scoreString + this.score);
+        }
+
+        for (var i = 0; i < this.oneEyeAliens.getChildren().length; i++) {
+            var oneEye_alien = this.oneEyeAliens.getChildren()[i];
+
+            this.physics.add.overlap(this.projectiles, oneEye_alien, function(projectile, alien){
+                projectile.destroy();
+                alien.data.list.lives -= 1;
+                if(alien.data.list.lives == 0){
+                    alien.destroy();
+                }            
+            });
+            
+            if(gameSettings.alien_boolean === true){
+                oneEye_alien.data.set('lives', 4);
+                gameSettings.alien_boolean = false;
+            }
+
+            
+            
+            oneEye_alien.update();
         }
 
         for (var i = 0; i < this.projectiles.getChildren().length; i++) {
@@ -104,10 +105,13 @@ class Scene3 extends Phaser.Scene {
         }
 
         if((gameSettings.frm_count % 120) == 0){
-            this.redBeamLeft();
-            this.redBeamRight();
             this.randomPowerUp();
         }
+         if((gameSettings.frm_count % 600) == 0){
+            this.randomAlien();
+            //this.redBeamLeft();
+            //this.redBeamRight();
+         }
     }
 
     shootBeam() {
@@ -126,19 +130,7 @@ class Scene3 extends Phaser.Scene {
         var powerUp = new PowerUp(this);
     }
 
-     moveDroid(){
-        this.droidMover = Phaser.Math.Between(1, 4)
-        
-         if(this.droidMover == 1){
-             this.oneEye_alien.setVelocityX(100);
-         } else if(this.droidMover == 2){
-             this.oneEye_alien.setVelocityX(-100);
-         } else if(this.droidMover == 3){
-             this.oneEye_alien.setVelocityY(100);
-         } else if(this.droidMover == 4){
-             this.oneEye_alien.setVelocityY(-100);
-         } else {
-             this.oneEye_alien.setVelocityX(0);
-         }
-     }
+    randomAlien(){
+        var oneEye_alien = new OneEye_Alien(this);        
+    }
 }
