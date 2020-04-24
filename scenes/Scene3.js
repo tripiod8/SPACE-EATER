@@ -61,7 +61,7 @@ class Scene3 extends Phaser.Scene {
         manageRocket.moveRocketManager(this.rocket, this.throttle, this.cursorKeys);
 
         if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
-            this.shootBeam();
+            manageBeam.shootBeam(this);
             this.score += 10;
             this.scoreText.setText(this.scoreString + this.score);
         }
@@ -79,20 +79,11 @@ class Scene3 extends Phaser.Scene {
             oneEye_alien.update();
         }
 
-        for (var i = 0; i < this.projectiles.getChildren().length; i++) {
-            var beam = this.projectiles.getChildren()[i];
-            beam.update();
-        }
+        utils.beam(this);
 
-        for (var i = 0; i < this.red_beam_left.getChildren().length; i++) {
-            var red_beam_left = this.red_beam_left.getChildren()[i];
-            red_beam_left.update();
-        }
+        utils.redBeamLeft(this);
 
-        for (var i = 0; i < this.red_beam_right.getChildren().length; i++) {
-            var red_beam_right = this.red_beam_right.getChildren()[i];
-            red_beam_right.update();
-        }
+        utils.redBeamRight(this);
 
         if((gameSettings.frm_count % 120) == 0){
             this.randomPowerUp();
@@ -100,22 +91,12 @@ class Scene3 extends Phaser.Scene {
          if((gameSettings.frm_count % 600) == 0){
             this.randomAlien();
             for(var i=0; i < this.oneEyeAliens.getChildren().length; i++){
-                this.redBeamLeft(this.oneEyeAliens.getChildren()[i].x + 41, this.oneEyeAliens.getChildren()[i].y + 15);
-                this.redBeamRight(this.oneEyeAliens.getChildren()[i].x - 45, this.oneEyeAliens.getChildren()[i].y + 15);
+                var x = this.oneEyeAliens.getChildren()[i].x;
+                var y = this.oneEyeAliens.getChildren()[i].y;
+                manageBeam.redBeamLeft(x + 41, y + 15, this);
+                manageBeam.redBeamRight(x - 45, y + 15, this);
             }
          }
-    }
-
-    shootBeam() {
-        var beam = new Green_Beam(this);
-    }
-
-    redBeamLeft(x, y) {
-        var red_beam_left = new Red_Beam_Left(x, y, this);
-    }
-    
-    redBeamRight(x, y){
-        var red_beam_right= new Red_Beam_Right(x, y, this);        
     }
 
     randomPowerUp(){

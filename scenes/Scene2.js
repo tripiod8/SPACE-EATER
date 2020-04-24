@@ -6,7 +6,7 @@ class Scene2 extends Phaser.Scene{
     create(){
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        this.add.text(20, 20, "Loading Game", {font: "25px Space Mono"});
+        this.add.text(20, 20, "Press Space to Begin!", {font: "25px Space Mono"});
 
     }
 

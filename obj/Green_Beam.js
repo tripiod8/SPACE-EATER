@@ -13,7 +13,7 @@ class Green_Beam extends Phaser.GameObjects.Sprite{
     }
 
     update(){
-        if(this.y < 20){
+        if(this.y < 200){
             this.destroy();
         }
     }
