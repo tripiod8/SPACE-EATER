@@ -20,13 +20,13 @@ class OneEye_Alien extends Phaser.GameObjects.Sprite{
          this.droidMover = Phaser.Math.Between(1, 4)
         
           if(this.droidMover == 1){
-              this.body.velocity.x = +150;
+              this.body.velocity.x = +100;
           } else if(this.droidMover == 2){
-              this.body.velocity.x = -150;
+              this.body.velocity.x = -100;
           } else if(this.droidMover == 3){
-              this.body.velocity.y = +150;
+              this.body.velocity.y = +100;
           } else if(this.droidMover == 4){
-              this.body.velocity.y = -150;
+              this.body.velocity.y = -100;
           } else {
               this.body.velocity.x = 0;
           }

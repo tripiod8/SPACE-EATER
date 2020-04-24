@@ -68,6 +68,7 @@ class Scene3 extends Phaser.Scene {
 
         for (var i = 0; i < this.oneEyeAliens.getChildren().length; i++) {
             var oneEye_alien = this.oneEyeAliens.getChildren()[i];
+            
             this.physics.add.overlap(this.projectiles, oneEye_alien, function(projectile, alien){
                 projectile.destroy();
                 alien.data.list.lives -= 1;
@@ -98,8 +99,10 @@ class Scene3 extends Phaser.Scene {
         }
          if((gameSettings.frm_count % 600) == 0){
             this.randomAlien();
-            //this.redBeamLeft();
-            //this.redBeamRight();
+            for(var i=0; i < this.oneEyeAliens.getChildren().length; i++){
+                this.redBeamLeft(this.oneEyeAliens.getChildren()[i].x + 41, this.oneEyeAliens.getChildren()[i].y + 15);
+                this.redBeamRight(this.oneEyeAliens.getChildren()[i].x - 45, this.oneEyeAliens.getChildren()[i].y + 15);
+            }
          }
     }
 
@@ -107,12 +110,12 @@ class Scene3 extends Phaser.Scene {
         var beam = new Green_Beam(this);
     }
 
-    redBeamLeft() {
-        var red_beam_left = new Red_Beam_Left(this);
+    redBeamLeft(x, y) {
+        var red_beam_left = new Red_Beam_Left(x, y, this);
     }
     
-    redBeamRight(){
-        var red_beam_right= new Red_Beam_Right(this);
+    redBeamRight(x, y){
+        var red_beam_right= new Red_Beam_Right(x, y, this);        
     }
 
     randomPowerUp(){
@@ -120,6 +123,6 @@ class Scene3 extends Phaser.Scene {
     }
 
     randomAlien(){
-        var oneEye_alien = new OneEye_Alien(this);        
+        var oneEye_alien = new OneEye_Alien(this);
     }
 }
