@@ -80,7 +80,11 @@ class Scene3 extends Phaser.Scene {
             this.randomPowerUp();
         }
          if((gameSettings.frm_count % 600) == 0){
-            this.randomAlien();
+             if(this.oneEyeAliens.getChildren().length < 3){
+                this.randomAlien();
+             }
+         }
+         if((gameSettings.frm_count % 120) == 0){
             for(var i=0; i < this.oneEyeAliens.getChildren().length; i++){
                 var x = this.oneEyeAliens.getChildren()[i].x;
                 var y = this.oneEyeAliens.getChildren()[i].y;
