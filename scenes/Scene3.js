@@ -51,7 +51,7 @@ class Scene3 extends Phaser.Scene {
     }
     update() {
         gameSettings.frm_count++;
-        
+
         this.background.tilePositionY -= 0.5;
         utils.dying_planet(this);
     

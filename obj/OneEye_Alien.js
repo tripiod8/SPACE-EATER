@@ -1,6 +1,7 @@
-class OneEye_Alien extends Phaser.GameObjects.Sprite{
+class OneEye_Alien extends Phaser.Physics.Arcade.Sprite{
     constructor(scene){
         super(scene, config.width / 2, config.height / 2, 'oneEye_alien');
+        scene.physics.world.enableBody(this);
         this.setRandomPosition(0, 0, config.width, config.height);
         this.setDataEnabled();
         this.data.set('lives', 7);
@@ -8,8 +9,8 @@ class OneEye_Alien extends Phaser.GameObjects.Sprite{
         this.setDepth(2);
         this.play('oneEye_alien_anim');
         scene.add.existing(this);
-        scene.physics.world.enableBody(this);
-        
+        scene.physics.add.existing(this);
+        this.setCollideWorldBounds(true);
     }
 
     update(){
