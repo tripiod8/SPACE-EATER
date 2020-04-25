@@ -40,5 +40,12 @@ var manageRocket = {
             rocket.setVelocityY(0);
             throttle.setVelocityY(0);
         }
+    },
+    fireWeapon: function(scene){
+        if (Phaser.Input.Keyboard.JustDown(scene.spacebar)) {
+            manageBeam.shootBeam(scene);
+            scene.score += 10;
+            scene.scoreText.setText(scene.scoreString + scene.score);
+        }
     }
 }

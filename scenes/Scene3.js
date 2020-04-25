@@ -50,31 +50,22 @@ class Scene3 extends Phaser.Scene {
         /////////////////////////////////////////////////////////////////////////////////
     }
     update() {
-        this.dying_planet.y += 1.5;
-        if(this.dying_planet.y >= 1200) {
-            this.dying_planet.destroy();
-        }
-        
         gameSettings.frm_count++;
-    
+        
         this.background.tilePositionY -= 0.5;
+        utils.dying_planet(this);
+    
         manageRocket.moveRocketManager(this.rocket, this.throttle, this.cursorKeys);
-
-        if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
-            manageBeam.shootBeam(this);
-            this.score += 10;
-            this.scoreText.setText(this.scoreString + this.score);
-        }
+        manageRocket.fireWeapon(this);
 
         for (var i = 0; i < this.oneEyeAliens.getChildren().length; i++) {
             var oneEye_alien = this.oneEyeAliens.getChildren()[i];
-            
             this.physics.add.overlap(this.projectiles, oneEye_alien, function(projectile, alien){
                 projectile.destroy();
                 alien.data.list.lives -= 1;
                 if(alien.data.list.lives == 0){
                     alien.destroy();
-                }            
+                };            
             });
             oneEye_alien.update();
         }

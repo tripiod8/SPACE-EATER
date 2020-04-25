@@ -16,5 +16,11 @@ var utils = {
             var red_beam_right = scene.red_beam_right.getChildren()[i];
             red_beam_right.update();
         }
+    },
+    dying_planet: function(scene){
+        scene.dying_planet.y += 1.5;
+        if(scene.dying_planet.y >= 1200) {
+            scene.dying_planet.destroy();
+        }
     }
 }
