@@ -84,10 +84,11 @@ class Scene3 extends Phaser.Scene {
                 this.randomAlien();
              }
          }
-         if((gameSettings.frm_count % 120) == 0){
-            for(var i=0; i < this.oneEyeAliens.getChildren().length; i++){
-                var x = this.oneEyeAliens.getChildren()[i].x;
-                var y = this.oneEyeAliens.getChildren()[i].y;
+
+         for(var i=0; i < this.oneEyeAliens.getChildren().length; i++){
+            var x = this.oneEyeAliens.getChildren()[i].x;
+            var y = this.oneEyeAliens.getChildren()[i].y;
+            if((gameSettings.frm_count % Phaser.Math.Between(100, 200)) == 0){
                 manageBeam.redBeamLeft(x + 41, y + 15, this);
                 manageBeam.redBeamRight(x - 45, y + 15, this);
             }
