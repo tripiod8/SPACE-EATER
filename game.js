@@ -1,6 +1,9 @@
 var gameSettings = {
     gameSpeed: 200,
-    frm_count: 0
+    frm_count: 0,
+    scoreString: 'Score: ',
+    scoreText: null,
+    score: 0
 }
 
 var config = {

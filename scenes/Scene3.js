@@ -41,12 +41,13 @@ class Scene3 extends Phaser.Scene {
         ////////////////////////////////////////////////////////////////////////////////////
 
         ////////////// HEADER //////////////////////////////////////////////////////
-        this.scoreString = 'Score: '
-        this.score = 0;
+        this.lifeString = 'Lives: '
+        this.life = 3;
         this.logo = this.add.image(80, 80, 'logo');
-        this.scoreText = this.add.text(config.width * 0.8, config.height * 0.05, this.scoreString, { font: "25px Space Mono" });
+        this.lifeText = this.add.text(config.width * 0.8, config.height * 0.05, this.lifeString, { font: "25px Space Mono" });
+        gameSettings.scoreText = this.add.text(config.width * 0.8, config.height * 0.09, gameSettings.scoreString, { font: "25px Space Mono" });
         this.logo.setDepth(1);
-        this.scoreText.setDepth(1);
+        gameSettings.scoreText.setDepth(1);
         /////////////////////////////////////////////////////////////////////////////////
     }
     update() {
@@ -54,6 +55,8 @@ class Scene3 extends Phaser.Scene {
 
         this.background.tilePositionY -= 0.5;
         utils.dying_planet(this);
+
+        this.lifeText.setText(this.lifeString + this.life);
     
         manageRocket.moveRocketManager(this.rocket, this.throttle, this.cursorKeys);
         manageRocket.fireWeapon(this);
@@ -62,6 +65,7 @@ class Scene3 extends Phaser.Scene {
             var oneEye_alien = this.oneEyeAliens.getChildren()[i];
             this.physics.add.overlap(this.projectiles, oneEye_alien, function(projectile, alien){
                 projectile.destroy();
+                utils.score(10);
                 alien.data.list.lives -= 1;
                 if(alien.data.list.lives == 0){
                     alien.destroy();

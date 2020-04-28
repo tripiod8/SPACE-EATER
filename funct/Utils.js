@@ -1,4 +1,8 @@
 var utils = {
+    score: function(points){
+        gameSettings.score += points;
+        gameSettings.scoreText.setText(gameSettings.scoreString + gameSettings.score);
+    },
     beam: function(scene){
         for (var i = 0; i < scene.projectiles.getChildren().length; i++) {
             var beam = scene.projectiles.getChildren()[i];
