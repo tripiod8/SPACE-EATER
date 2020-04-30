@@ -15,6 +15,8 @@ class Scene3 extends Phaser.Scene {
         this.throttle = this.physics.add.sprite(config.width / 2, (config.height * 0.8) + 42, 'throttle');
         this.rocket = this.physics.add.image(config.width / 2, config.height * 0.8, 'rocket');
         this.throttle.play('throttle_anim');
+        this.rocket.setDataEnabled();
+        this.rocket.data.set('lives', 10);
         this.rocket.setDepth(2);
         this.throttle.setDepth(2);
         ////////////////////////////////////////////////////////////////////////////
@@ -25,28 +27,23 @@ class Scene3 extends Phaser.Scene {
         /////////////////////////////////////////////////////////////////////////
 
         //////////// GROUPS /////////////////////////////////////////////
-        this.oneEyeAliens = this.add.group();
-        
+        this.oneEyeAliens = this.add.group(); 
         this.projectiles = this.add.group();
         this.red_beam_left = this.add.group();
         this.red_beam_right = this.add.group();
-
         this.powerUps = this.add.group();
         ///////////////////////////////////////////////////////////////////////////////////////
 
         /////////////// COLLIDES //////////////////////////////////////////////////////////
-        this.physics.add.overlap(this.rocket, this.powerUps, function(rocket, powerUp){
-            powerUp.destroy();
-        });
+        
         ////////////////////////////////////////////////////////////////////////////////////
 
         ////////////// HEADER //////////////////////////////////////////////////////
-        this.lifeString = 'Lives: '
-        this.life = 3;
         this.logo = this.add.image(80, 80, 'logo');
-        this.lifeText = this.add.text(config.width * 0.8, config.height * 0.05, this.lifeString, { font: "25px Space Mono" });
-        gameSettings.scoreText = this.add.text(config.width * 0.8, config.height * 0.09, gameSettings.scoreString, { font: "25px Space Mono" });
+        this.healthbar = this.add.sprite(config.width * 0.85, config.height * 0.07, 'healthbar', 10);
+        gameSettings.scoreText = this.add.text(config.width * 0.75, config.height * 0.095, gameSettings.scoreString, { font: "25px Space Mono" });
         this.logo.setDepth(1);
+        this.healthbar.setDepth(1)
         gameSettings.scoreText.setDepth(1);
         /////////////////////////////////////////////////////////////////////////////////
     }
@@ -55,11 +52,26 @@ class Scene3 extends Phaser.Scene {
 
         this.background.tilePositionY -= 0.5;
         utils.dying_planet(this);
+        utils.lives(this); 
 
-        this.lifeText.setText(this.lifeString + this.life);
-    
+        console.log(this.rocket.data.get('lives'));
+   
         manageRocket.moveRocketManager(this.rocket, this.throttle, this.cursorKeys);
         manageRocket.fireWeapon(this);
+
+         this.physics.add.overlap(this.rocket, this.red_beam_left, function(rocket, beam){
+             beam.destroy()
+             rocket.data.list.lives -= 1;            
+         })  
+         this.physics.add.overlap(this.rocket, this.red_beam_right, function(rocket, beam){
+             beam.destroy()
+             rocket.data.list.lives -= 1;            
+         })
+   
+        if(this.rocket.data.list.lives == 0){
+            this.rocket.disableBody(true, true);
+            this.throttle.disableBody(true, true);
+        }  
 
         for (var i = 0; i < this.oneEyeAliens.getChildren().length; i++) {
             var oneEye_alien = this.oneEyeAliens.getChildren()[i];
@@ -83,6 +95,15 @@ class Scene3 extends Phaser.Scene {
         if((gameSettings.frm_count % 120) == 0){
             this.randomPowerUp();
         }
+
+        this.physics.add.overlap(this.rocket, this.powerUps, function(rocket, powerUp){
+            console.log(powerUp.texture.key);
+            if(powerUp.texture.key === 'recharge'){
+                rocket.data.list.lives += 1;
+            };
+            powerUp.destroy();
+        });
+
          if((gameSettings.frm_count % 600) == 0){
              if(this.oneEyeAliens.getChildren().length < 3){
                 this.randomAlien();

@@ -4,6 +4,10 @@ class Scene1 extends Phaser.Scene {
     }
 
     preload() {
+        this.healthbar = this.load.spritesheet('healthbar', 'assets/HealthBar.png', {
+            frameWidth: 128,
+            frameHeight: 23
+        });
         this.throttle = this.load.spritesheet('throttle', 'assets/rocket/Throttle.png', {
             frameWidth: 16,
             frameHeight: 32
