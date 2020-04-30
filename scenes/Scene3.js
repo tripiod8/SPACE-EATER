@@ -99,7 +99,9 @@ class Scene3 extends Phaser.Scene {
         this.physics.add.overlap(this.rocket, this.powerUps, function(rocket, powerUp){
             console.log(powerUp.texture.key);
             if(powerUp.texture.key === 'recharge'){
-                rocket.data.list.lives += 1;
+                if(rocket.data.list.lives != 10){
+                    rocket.data.list.lives += 1;
+                };
             };
             powerUp.destroy();
         });
