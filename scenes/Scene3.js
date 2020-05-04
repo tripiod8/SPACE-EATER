@@ -49,6 +49,8 @@ class Scene3 extends Phaser.Scene {
     }
     update() {
         gameSettings.frm_count++;
+        console.log(this.shield.data.list.lives);
+        
 
         this.background.tilePositionY -= 0.5;
         utils.dying_planet(this);
@@ -84,7 +86,7 @@ class Scene3 extends Phaser.Scene {
         } 
         
 
-        if(this.shield.data.list.lives === 0){
+        if(this.shield.data.list.lives <= 0){
             this.rocket.data.list.shield = false;
             this.shield.data.list.lives += 5;
         }
@@ -115,7 +117,6 @@ class Scene3 extends Phaser.Scene {
         }
 
         this.physics.add.overlap(this.rocket, this.powerUps, function(rocket, powerUp){
-            console.log(powerUp.texture.key);
             if(powerUp.texture.key === 'recharge'){
                 if(rocket.data.list.lives != 10){
                     rocket.data.list.lives += 1;
