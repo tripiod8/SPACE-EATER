@@ -6,7 +6,6 @@ class Scene3 extends Phaser.Scene {
         ///////////////// BACKGROUND ////////////////////////////////////////////////////////////
         this.background = this.add.tileSprite(0, 0, config.width, config.height, "background");
         this.background.setOrigin(0, 0);
-
         this.dying_planet = this.add.image(config.width / 2, 650, 'dying_planet')
         this.dying_planet.setScale(1.75);
         /////////////////////////////////////////////////////////////////////////////
@@ -14,9 +13,14 @@ class Scene3 extends Phaser.Scene {
         //////////////// ROCKET //////////////////////////////////////////////////
         this.throttle = this.physics.add.sprite(config.width / 2, (config.height * 0.8) + 42, 'throttle');
         this.rocket = this.physics.add.image(config.width / 2, config.height * 0.8, 'rocket');
+        this.shield = this.physics.add.image(config.width / 2, config.height * 0.8 - 42, 'shield_rocket');
         this.throttle.play('throttle_anim');
         this.rocket.setDataEnabled();
+        this.shield.setDataEnabled();
         this.rocket.data.set('lives', 10);
+        this.rocket.data.set('shield', false);
+        this.shield.data.set('lives', 10);
+        this.shield.disableBody(true, true);
         this.rocket.setDepth(2);
         this.throttle.setDepth(2);
         ////////////////////////////////////////////////////////////////////////////
@@ -34,10 +38,6 @@ class Scene3 extends Phaser.Scene {
         this.powerUps = this.add.group();
         ///////////////////////////////////////////////////////////////////////////////////////
 
-        /////////////// COLLIDES //////////////////////////////////////////////////////////
-        
-        ////////////////////////////////////////////////////////////////////////////////////
-
         ////////////// HEADER //////////////////////////////////////////////////////
         this.logo = this.add.image(80, 80, 'logo');
         this.healthbar = this.add.sprite(config.width * 0.85, config.height * 0.07, 'healthbar', 10);
@@ -49,12 +49,12 @@ class Scene3 extends Phaser.Scene {
     }
     update() {
         gameSettings.frm_count++;
+        console.log(this.shield.data.list.lives);
+        
 
         this.background.tilePositionY -= 0.5;
         utils.dying_planet(this);
         utils.lives(this); 
-
-        console.log(this.rocket.data.get('lives'));
    
         manageRocket.moveRocketManager(this.rocket, this.throttle, this.cursorKeys);
         manageRocket.fireWeapon(this);
@@ -67,11 +67,33 @@ class Scene3 extends Phaser.Scene {
              beam.destroy()
              rocket.data.list.lives -= 1;            
          })
+         this.physics.add.overlap(this.shield, this.red_beam_left, function(shield, beam){
+            beam.destroy()
+            shield.data.list.lives -= 1;            
+        })  
+        this.physics.add.overlap(this.shield, this.red_beam_right, function(shield, beam){
+            beam.destroy()
+            shield.data.list.lives -= 1;            
+        })
+    
    
         if(this.rocket.data.list.lives == 0){
             this.rocket.disableBody(true, true);
             this.throttle.disableBody(true, true);
         }  
+        if(this.rocket.data.list.shield === true){
+            this.shield.enableBody(true, this.rocket.x, this.rocket.y - 42, true, true)
+        } 
+        
+
+        if(this.shield.data.list.lives <= 0){
+            this.rocket.data.list.shield = false;
+            this.shield.data.list.lives += 5;
+        }
+
+        if(this.rocket.data.list.shield == false){
+            this.shield.disableBody(true, true);
+        }
 
         for (var i = 0; i < this.oneEyeAliens.getChildren().length; i++) {
             var oneEye_alien = this.oneEyeAliens.getChildren()[i];
@@ -87,9 +109,7 @@ class Scene3 extends Phaser.Scene {
         }
 
         utils.beam(this);
-
         utils.redBeamLeft(this);
-
         utils.redBeamRight(this);
 
         if((gameSettings.frm_count % 120) == 0){
@@ -97,12 +117,13 @@ class Scene3 extends Phaser.Scene {
         }
 
         this.physics.add.overlap(this.rocket, this.powerUps, function(rocket, powerUp){
-            console.log(powerUp.texture.key);
             if(powerUp.texture.key === 'recharge'){
                 if(rocket.data.list.lives != 10){
                     rocket.data.list.lives += 1;
                 };
-            };
+            } else if(powerUp.texture.key === 'shield'){
+                rocket.data.list.shield = true;
+            }
             powerUp.destroy();
         });
 

@@ -24,6 +24,7 @@ class Scene1 extends Phaser.Scene {
         this.rocket = this.load.image('rocket', 'assets/rocket/Rocket.png');
         this.rocket_right = this.load.image('rocket_right', 'assets/rocket/Rocket_Right.png');
         this.rocket_left = this.load.image('rocket_left', 'assets/rocket/Rocket_Left.png');
+        this.shield_rocket = this.load.image('shield_rocket', 'assets/rocket/Shield.png');
 
         this.ammo = this.load.image('ammo', 'assets/upgrades/Ammo.png');
         this.recharge = this.load.image('recharge', 'assets/upgrades/Recharge.png');
