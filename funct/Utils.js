@@ -65,5 +65,6 @@ var utils = {
         if(scene.dying_planet.y >= 1200) {
             scene.dying_planet.destroy();
         }
-    }
+    },
+
 }

@@ -6,8 +6,11 @@ class Scene3 extends Phaser.Scene {
         ///////////////// BACKGROUND ////////////////////////////////////////////////////////////
         this.background = this.add.tileSprite(0, 0, config.width, config.height, "background");
         this.background.setOrigin(0, 0);
-        this.dying_planet = this.add.image(config.width / 2, 650, 'dying_planet')
+        this.dying_planet = this.add.image(config.width / 2, 650, 'dying_planet') // todo (fix height)
         this.dying_planet.setScale(1.75);
+        this.living_planet = this.physics.add.image(config.width / 2, -500, 'living_planet');
+        this.living_planet.setScale(1.50);
+        this.living_planet.disableBody(true, true);
         /////////////////////////////////////////////////////////////////////////////
 
         //////////////// ROCKET //////////////////////////////////////////////////
@@ -50,9 +53,30 @@ class Scene3 extends Phaser.Scene {
     update() {
         gameSettings.frm_count++;
 
+        console.log(this.living_planet.y);
+        
+        
         this.background.tilePositionY -= 0.5;
         utils.dying_planet(this);
-        utils.lives(this); 
+        utils.lives(this);
+        
+        if(gameSettings.frm_count >= 5000){
+            gameSettings.livingPlanet = true;
+        }
+
+        if(gameSettings.livingPlanet == true){
+            this.living_planet.enableBody(false, config.width / 2, -500, true, true);
+            this.living_planet.y += 1.5;
+
+        }
+        if(this.living_planet.y >= 200){
+            this.rocket.y -= 5;
+            this.throttle.y -= 5;
+        }
+
+        if(this.living_planet.y >= 380){
+            this.scene.start('gameOver')
+        }
    
         manageRocket.moveRocketManager(this.rocket, this.throttle, this.cursorKeys);
         manageRocket.fireWeapon(this);

@@ -34,6 +34,7 @@ class Scene1 extends Phaser.Scene {
         this.red_beam = this.load.image('red_beam', 'assets/enemies/Red_Beam.png');
 
         this.dying_planet = this.load.image('dying_planet', 'assets/Dying_Planet.png');
+        this.living_planet = this.load.image('living_planet', 'assets/Living_Planet.png');
         this.background = this.load.image('background', 'assets/Background.jpg');
         this.logo = this.load.image('logo', 'assets/Logo.png');
     }
