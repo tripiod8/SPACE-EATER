@@ -3,45 +3,6 @@ var utils = {
         gameSettings.score += points;
         gameSettings.scoreText.setText(gameSettings.scoreString + gameSettings.score);
     },
-    lives: function(scene){
-        switch(scene.rocket.data.list.lives){
-            case 10:
-                scene.healthbar.setFrame(10);
-                break;
-            case 9:
-                scene.healthbar.setFrame(9);
-                break;
-            case 8:
-                scene.healthbar.setFrame(8);
-                break;
-            case 7:
-                scene.healthbar.setFrame(7);
-                break;    
-            case 6:
-                scene.healthbar.setFrame(6);
-                break;    
-            case 5:
-                scene.healthbar.setFrame(5);
-                break;   
-            case 4:
-                scene.healthbar.setFrame(4);
-                break;
-            case 3:
-                scene.healthbar.setFrame(3);
-                break;  
-            case 2:
-                scene.healthbar.setFrame(2);
-                break;    
-            case 1:
-                scene.healthbar.setFrame(1);
-                break;
-            case 0:
-                scene.healthbar.setFrame(0);
-                break;  
-            default:
-                scene.healthbar.setFrame(10)      
-        };
-    },
     beam: function(scene){
         for (var i = 0; i < scene.projectiles.getChildren().length; i++) {
             var beam = scene.projectiles.getChildren()[i];
@@ -66,5 +27,17 @@ var utils = {
             scene.dying_planet.destroy();
         }
     },
-
+    living_planet: function(scene){
+        if(gameSettings.gameWon == true){
+            scene.living_planet.enableBody(false, config.width / 2, -500, true, true);
+            scene.living_planet.y += 1.5;
+        }
+        if(scene.living_planet.y >= 200){
+           scene.rocket.y -= 5;
+           scene.throttle.y -= 5;
+        }
+        if(scene.living_planet.y >= 380){
+            scene.scene.start('gameOver')
+        }
+    }
 }

@@ -2,7 +2,6 @@ class Scene2 extends Phaser.Scene{
     constructor(){
         super('loadGame');
     }
-
     create(){
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 

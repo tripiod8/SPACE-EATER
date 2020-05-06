@@ -2,7 +2,6 @@ class Scene1 extends Phaser.Scene {
     constructor() {
         super('bootGame')
     }
-
     preload() {
         this.healthbar = this.load.spritesheet('healthbar', 'assets/HealthBar.png', {
             frameWidth: 128,
