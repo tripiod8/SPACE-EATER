@@ -1,7 +1,7 @@
 var gameSettings = {
     gameSpeed: 200,
     frm_count: 0,
-    livingPlanet: false,
+    gameWon: false,
     scoreString: 'Score: ',
     scoreText: null,
     score: 0

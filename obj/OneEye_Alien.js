@@ -15,6 +15,9 @@ class OneEye_Alien extends Phaser.Physics.Arcade.Sprite{
 
     update(){
         this.moveDroid();
+        if(gameSettings.gameWon == true){
+            this.disableBody(true, true);
+        }
     }
 
      moveDroid(){

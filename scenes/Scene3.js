@@ -53,18 +53,16 @@ class Scene3 extends Phaser.Scene {
     update() {
         gameSettings.frm_count++;
 
-        console.log(this.living_planet.y);
-        
         
         this.background.tilePositionY -= 0.5;
         utils.dying_planet(this);
         utils.lives(this);
         
-        if(gameSettings.frm_count >= 5000){
-            gameSettings.livingPlanet = true;
+        if(gameSettings.frm_count == 4000){
+            gameSettings.gameWon = true;
         }
 
-        if(gameSettings.livingPlanet == true){
+        if(gameSettings.gameWon == true){
             this.living_planet.enableBody(false, config.width / 2, -500, true, true);
             this.living_planet.y += 1.5;
 
@@ -100,8 +98,7 @@ class Scene3 extends Phaser.Scene {
     
    
         if(this.rocket.data.list.lives == 0){
-            this.rocket.disableBody(true, true);
-            this.throttle.disableBody(true, true);
+            this.scene.start('gameOver');
         }  
         if(this.rocket.data.list.shield === true){
             this.shield.enableBody(true, this.rocket.x, this.rocket.y - 42, true, true)
@@ -117,7 +114,7 @@ class Scene3 extends Phaser.Scene {
             this.shield.disableBody(true, true);
         }
 
-        for (var i = 0; i < this.oneEyeAliens.getChildren().length; i++) {
+        for(var i = 0; i < this.oneEyeAliens.getChildren().length; i++) {
             var oneEye_alien = this.oneEyeAliens.getChildren()[i];
             this.physics.add.overlap(this.projectiles, oneEye_alien, function(projectile, alien){
                 projectile.destroy();
@@ -130,11 +127,16 @@ class Scene3 extends Phaser.Scene {
             oneEye_alien.update();
         }
 
+        for(var i=0; i<this.powerUps.getChildren().length; i++){
+            var powerUp = this.powerUps.getChildren()[i];
+            powerUp.update();
+        }
+
         utils.beam(this);
         utils.redBeamLeft(this);
         utils.redBeamRight(this);
 
-        if((gameSettings.frm_count % 120) == 0){
+        if((gameSettings.frm_count % 120) == 0 && gameSettings.gameWon == false){
             this.randomPowerUp();
         }
 
@@ -150,7 +152,7 @@ class Scene3 extends Phaser.Scene {
         });
 
          if((gameSettings.frm_count % 600) == 0){
-             if(this.oneEyeAliens.getChildren().length < 3){
+             if(this.oneEyeAliens.getChildren().length < 3 && gameSettings.gameWon == false){
                 this.randomAlien();
              }
          }
@@ -158,7 +160,7 @@ class Scene3 extends Phaser.Scene {
          for(var i=0; i < this.oneEyeAliens.getChildren().length; i++){
             var x = this.oneEyeAliens.getChildren()[i].x;
             var y = this.oneEyeAliens.getChildren()[i].y;
-            if((gameSettings.frm_count % Phaser.Math.Between(100, 200)) == 0){
+            if((gameSettings.frm_count % Phaser.Math.Between(100, 200)) == 0 && gameSettings.gameWon == false){
                 manageBeam.redBeamLeft(x + 41, y + 15, this);
                 manageBeam.redBeamRight(x - 45, y + 15, this);
             }
